@@ -6,12 +6,13 @@ public class Player : MonoBehaviour
 {
     //属性值
     public float moveSpeed = 3;
+    public float shootFrequency = 1;
     private Vector3 bulletAngles;
     private float timeVal = 0.4f;
     private bool isDefended;
     private float defendTimeVal = 3;
     private float enemyActionTimeVal = 0.4f;
-    private float enemyShootTimeVal = 0.1f;
+    private float enemyShootTimeVal;
     public bool isEnemy;
     private int enemyMoveValue_h,enemyMoveValue_v;
 
@@ -27,6 +28,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         sr = GetComponent<SpriteRenderer>();
+        enemyShootTimeVal = shootFrequency;
     }
 
     // Update is called once per frame
@@ -36,7 +38,7 @@ public class Player : MonoBehaviour
             //EnemyAction();
             if (enemyShootTimeVal <= 0) {
                 EnemyShootAction();
-                enemyShootTimeVal = 0.1f;
+                enemyShootTimeVal = shootFrequency;
             } else {
                 enemyShootTimeVal -= Time.deltaTime;
             }
@@ -49,10 +51,9 @@ public class Player : MonoBehaviour
     {
         if (isEnemy) {
             if (enemyActionTimeVal <= 0) {
-                System.Random ran_h = new System.Random();
-                int h  = ran_h.Next(-1, 2);//产生-1到1之间的随机整数
+                int h  = Random.Range(-1, 2);//产生-1到1之间的随机整数
                 System.Random ran_v = new System.Random();
-                int v = ran_v.Next(-3,4);
+                int v = Random.Range(-3,4);
                 enemyMoveValue_h = h;
                 enemyMoveValue_v = v;
                 enemyActionTimeVal = 0.4f;
@@ -76,7 +77,6 @@ public class Player : MonoBehaviour
             //向右移动
             sr.sprite = tankSprite[1];
             bulletAngles.z = 270;
-            Debug.Log("H="+h.ToString());
         }
         if (h != 0) { return ;}  //避免坦克出现斜着走，这里会保证h 和 v 必有一个为0
 
@@ -86,12 +86,10 @@ public class Player : MonoBehaviour
             //向下移动
             sr.sprite = tankSprite[2];
             bulletAngles.z = 180;
-            Debug.Log("v="+v.ToString());
         } else if (v > 0) {
             //向上移动
             sr.sprite = tankSprite[0];
             bulletAngles.z = 0;
-            Debug.Log("v="+v.ToString());
         }
     }
     private void EnemyMove(int h, int v) 
@@ -106,7 +104,6 @@ public class Player : MonoBehaviour
             sr.sprite = tankSprite[1];
             bulletAngles.z = 270;
         }
-        Debug.Log("电脑h="+h.ToString()+"v="+v.ToString());
         if (h != 0) { return ;}  //避免坦克出现斜着走，这里会保证h 和 v 必有一个为0
 
         transform.Translate(Vector3.up * v * moveSpeed * Time.fixedDeltaTime, Space.World);
