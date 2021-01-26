@@ -7,7 +7,7 @@ public class Tank : MonoBehaviour
     //属性值: 移动速度、攻击频率、无敌时间
     public float MoveSpeed = 3;
     public float AttackFreq = 0.4f;
-    public float InvincibleTime = 0.5f;
+    public float InvincibleTime = 2;
 
     //引用: 坦克的Sprite，子弹样式，出生特效，死亡特效，
     public Sprite[] tankSprite; //上右下左
@@ -20,8 +20,29 @@ public class Tank : MonoBehaviour
     void Start()
     {
         SelfRenderer = GetComponent<SpriteRenderer>();
+        ShowEffect();
     }
-
+    private void ShowEffect()
+    {
+        Transform born = transform.Find("Born");
+        Transform shield = transform.Find("Shield");
+        born.gameObject.SetActive(true);
+        Invoke("OffBornEffect",0.5f);
+        if(shield) {
+            shield.gameObject.SetActive(true);
+            Invoke("OffShieldEffect",InvincibleTime);
+        }
+    }
+    private void OffBornEffect()
+    {
+        Transform born = transform.Find("Born");
+        born.gameObject.SetActive(false);
+    }
+    private void OffShieldEffect()
+    {
+        Transform shield = transform.Find("Shield");
+        shield.gameObject.SetActive(false);
+    }
     void Update()
     {
         Attack();
@@ -36,6 +57,7 @@ public class Tank : MonoBehaviour
 
     private void Die()
     {
+        if (InvincibleTime > 0) return;
         Instantiate(DieEffectPrefab,transform.position,Quaternion.identity);
         Destroy(gameObject);
     }
@@ -71,6 +93,7 @@ public class Tank : MonoBehaviour
         if(V_move > 0) { TankAngle.z = 0; transform.rotation = Quaternion.Euler(TankAngle); return;} 
         if(V_move < 0) { TankAngle.z = 180; transform.rotation = Quaternion.Euler(TankAngle); return;} 
     }
+    
 
 }
    

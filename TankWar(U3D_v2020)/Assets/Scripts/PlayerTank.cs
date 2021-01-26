@@ -31,6 +31,7 @@ public class PlayerTank : Tank
     public override void TimeRecord()
     {
         if (PlayerTank_AttackFreq >= 0) PlayerTank_AttackFreq -= Time.deltaTime;
+        if (InvincibleTime > 0) InvincibleTime -= Time.deltaTime; 
     }
 
 }

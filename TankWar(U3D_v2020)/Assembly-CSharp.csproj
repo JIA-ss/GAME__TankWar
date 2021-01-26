@@ -44,6 +44,8 @@
      <Compile Include="Assets\Scripts\Tank.cs" />
      <Compile Include="Assets\Scripts\PlayerTank.cs" />
      <Compile Include="Assets\Scripts\EnemyTank.cs" />
+     <Compile Include="Assets\Scripts\MapCreation.cs" />
+     <Compile Include="Assets\Scripts\EnemyCreation.cs" />
     <Reference Include="UnityEngine">
         <HintPath>/Applications/Unity/Unity.app/Contents/Managed/UnityEngine/UnityEngine.dll</HintPath>
     </Reference>
